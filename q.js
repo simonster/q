@@ -87,19 +87,19 @@
         }
     
     // Mozilla JSM
-    } else if (~String(this).indexOf('BackstagePass')) {
+    } else if (String(this).indexOf('BackstagePass') !== -1) {
         EXPORTED_SYMBOLS = ["Q"];
         
         // Q expects an implementation of setTimeout
-        setTimeout = new function() {
+        setTimeout = new function () {
             // We need to maintain references to running nsITimers. Otherwise, they can
             // get garbage collected before they fire.
             var _runningTimers = [];
             
-            return function setTimeout(func, ms) {
+            return function setTimeout (func, ms) {
                 var timer = Components.classes["@mozilla.org/timer;1"].
                     createInstance(Components.interfaces.nsITimer);
-                timer.initWithCallback({"notify":function() {
+                timer.initWithCallback({"notify":function () {
                     // Remove timer from array so it can be garbage collected
                     _runningTimers.splice(_runningTimers.indexOf(timer), 1);
                     
